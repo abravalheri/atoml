@@ -846,3 +846,13 @@ def test_no_spurious_whitespaces():
     c = 3
     """
     assert doc.as_string() == dedent(expected)
+
+
+def test_append_dict_to_existing_array():
+    example = "x = [ ]"
+    doc = atoml.loads(dedent(example))
+    doc["x"].append({"name": "John Doe", "email": "john@doe.com"})
+    expected = 'x = [ {name = "John Doe",email = "john@doe.com"}]'
+    assert doc.as_string() == expected
+    # Make sure the produced string is valid
+    assert atoml.loads(doc.as_string()) == doc
